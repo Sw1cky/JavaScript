@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Busca de Usuários GitHub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    ul {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Buscar usuários do GitHub</h2>
+  <input type="text" id="busca" placeholder="Digite o nome de usuário" />
+  <button onclick="buscarUsuarios()">Buscar</button>
+
+  <ul id="resultado"></ul>
+
+  <script>
+    async function buscarUsuarios() {
+      const termo = document.getElementById('busca').value.trim();
+      const lista = document.getElementById('resultado');
+      lista.innerHTML = '';
+
+      if (termo === '') {
+        lista.innerHTML = '<li>Por favor, digite um termo de busca.</li>';
+        return;
+      }
+
+      try {
+        const resposta = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(termo)}`);
+        const dados = await resposta.json();
+
+        if (dados.total_count === 0) {
+          lista.innerHTML = '<li>Não foram encontrados usuários para esta pesquisa.</li>';
+        } else {
+          dados.items.forEach(usuario => {
+            const item = document.createElement('li');
+            item.innerHTML = `
+              <img src="${usuario.avatar_url}" width="40" height="40" style="vertical-align: middle; border-radius: 50%;">
+              <a href="${usuario.html_url}" target="_blank">${usuario.login}</a>
+            `;
+            lista.appendChild(item);
+          });
+        }
+      } catch (erro) {
+        lista.innerHTML = '<li>Erro ao buscar usuários. Tente novamente mais tarde.</li>';
+        console.error('Erro:', erro);
+      }
+    }
+  </script>
+
+</body>
+</html>
