@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplo de Seletores</title>
+  <style>
+    
+    .destaque {
+      color: blue;
+      font-weight: bold;
+    }
+
+    .estilo-lista {
+      color: green;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="titulo">Título Original</h1>
+
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+
+  <p>Este é o primeiro parágrafo.</p>
+  <p>Este é o segundo parágrafo.</p>
+
+  <button id="botao">Clique aqui</button>
+
+  <script>
+    document.getElementById("titulo").textContent = "Novo Título Modificado";
+
+    const itensLista = document.querySelectorAll("ul li");
+    itensLista.forEach(item => {
+      item.classList.add("estilo-lista");
+    });
+
+    const paragrafos = document.querySelectorAll("p");
+    paragrafos.forEach(p => {
+      p.classList.add("destaque");
+    });
+
+    document.getElementById("botao").textContent = "Texto Alterado!";
+  </script>
+
+</body>
+</html>
